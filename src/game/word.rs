@@ -28,10 +28,14 @@ impl parse::Parse for Word {
     where
         Self: Sized,
     {
-        let mut s = String::new();
-        r.read_line(&mut s)?;
+        let mut value = String::new();
+        r.read_line(&mut value)?;
 
-        let word = Word { value: s };
+        let value = String::from(value.trim())
+            .replace("\n", "")
+            .replace("\"", "");
+
+        let word = Word { value: value };
         Ok(word)
     }
 }

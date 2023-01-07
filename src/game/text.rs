@@ -30,10 +30,16 @@ impl parse::Parse for Text {
     {
         let mut value = String::new();
 
-        while !value.ends_with("\"\n") {
+        let mut count = 0;
+        while !value.ends_with("\"\n") || (value.starts_with("\"\n") && count == 1) {
             r.read_line(&mut value)?;
+            count += 1;
             //TODO: infinite loop in case of bad formatted strings
         }
+
+        let value = String::from(value.trim())
+            .replace("\n", "")
+            .replace("\"", "");
 
         let text = Text { value: value };
         Ok(text)

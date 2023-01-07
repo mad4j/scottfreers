@@ -1,4 +1,4 @@
-use super::{parse, text::Text};
+use super::{parse, text::Text, token::Token};
 
 use std::{
     fmt,
@@ -9,7 +9,7 @@ use std::{
 #[derive(Debug)]
 pub struct Room {
     text: Text,
-    exits: [u16; 6],
+    exits: [Token; 6],
 }
 
 impl parse::Parse for Room {
@@ -19,12 +19,12 @@ impl parse::Parse for Room {
     {
         let room = Room {
             exits: [
-                Self::parse_u16(r)?,
-                Self::parse_u16(r)?,
-                Self::parse_u16(r)?,
-                Self::parse_u16(r)?,
-                Self::parse_u16(r)?,
-                Self::parse_u16(r)?,
+                Token::parse(r)?,
+                Token::parse(r)?,
+                Token::parse(r)?,
+                Token::parse(r)?,
+                Token::parse(r)?,
+                Token::parse(r)?,
             ],
             text: Text::parse(r)?,
         };
@@ -36,7 +36,7 @@ impl fmt::Display for Room {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "Room {{ text: {:?}, exits: [{}, {}, {}, {}, {}, {}]}}",
+            "Room {{ text: {}, exits: [{}, {}, {}, {}, {}, {}]}}",
             self.text,
             self.exits[0],
             self.exits[1],

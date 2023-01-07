@@ -1,4 +1,4 @@
-use super::parse;
+use super::{parse, token::Token};
 
 use std::{
     fmt,
@@ -9,8 +9,8 @@ use std::{
 #[derive(Debug)]
 pub struct Action {
     vocab: u16,
-    conditions: [u16; 5],
-    actions: [u16; 2],
+    conditions: [Token; 5],
+    actions: [Token; 2],
 }
 
 impl parse::Parse for Action {
@@ -19,15 +19,15 @@ impl parse::Parse for Action {
         Self: Sized,
     {
         let a = Action {
-            vocab: Self::parse_u16(r)?,
+            vocab: Token::parse(r)?,
             conditions: [
-                Self::parse_u16(r)?,
-                Self::parse_u16(r)?,
-                Self::parse_u16(r)?,
-                Self::parse_u16(r)?,
-                Self::parse_u16(r)?,
+                Token::parse(r)?,
+                Token::parse(r)?,
+                Token::parse(r)?,
+                Token::parse(r)?,
+                Token::parse(r)?,
             ],
-            actions: [Self::parse_u16(r)?, Self::parse_u16(r)?],
+            actions: [Token::parse(r)?, Token::parse(r)?],
         };
 
         Ok(a)

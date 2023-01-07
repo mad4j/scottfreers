@@ -1,4 +1,7 @@
-use super::{action::Action, header::Header, parse::Parse, room::Room, text::Text, word::Word};
+use super::{
+    action::Action, header::Header, item::Item, parse::Parse, room::Room, text::Text,
+    trailer::Trailer, word::Word,
+};
 
 use std::{
     fmt,
@@ -14,6 +17,8 @@ pub struct Data {
     noums: Vec<Word>,
     rooms: Vec<Room>,
     messages: Vec<Text>,
+    items: Vec<Item>,
+    trailer: Trailer,
 }
 
 impl Parse for Data {
@@ -45,6 +50,18 @@ impl Parse for Data {
             messages.push(Text::parse(r)?);
         }
 
+        let mut items = Vec::new();
+        for _ in 0..header.num_items {
+            items.push(Item::parse(r)?);
+        }
+
+        for _ in 0..header.num_actions {
+            // discards comments
+            Text::parse(r)?;
+        }
+
+        let trailer = Trailer::parse(r)?;
+
         let data = Data {
             header: header,
             actions: actions,
@@ -52,6 +69,8 @@ impl Parse for Data {
             noums: noums,
             rooms: rooms,
             messages: messages,
+            items: items,
+            trailer: trailer,
         };
 
         Ok(data)
@@ -86,5 +105,11 @@ impl Data {
         for i in 0..self.header.num_messages {
             println!("messages[{}]: {}", i, self.messages[i as usize]);
         }
+
+        for i in 0..self.header.num_items {
+            println!("items[{}]: {}", i, self.items[i as usize]);
+        }
+
+        println!("{}", self.trailer);
     }
 }

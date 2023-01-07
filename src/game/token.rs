@@ -1,7 +1,6 @@
 use super::parse;
 
 use std::{
-    fmt,
     fs::File,
     io::{BufRead, BufReader, Error, ErrorKind},
 };

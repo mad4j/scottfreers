@@ -30,7 +30,7 @@ impl parse::Parse for Header {
     {
         let h = Header {
             unknown: Token::parse(r)?,
-            num_items: Token::parse(r)?,
+            num_items: Token::parse(r)? + 1,
             num_actions: Token::parse(r)? + 1,
             num_words: Token::parse(r)? + 1,
             num_rooms: Token::parse(r)? + 1,
