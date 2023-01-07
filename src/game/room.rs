@@ -6,8 +6,6 @@ use std::{
     io::{BufReader, Error},
 };
 
-use log::{info, debug, trace};
-
 #[derive(Debug)]
 pub struct Room {
     text: Text,

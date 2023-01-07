@@ -5,6 +5,7 @@ pub mod header;
 pub mod room;
 
 pub mod text;
+pub mod token;
 pub mod word;
 
 pub mod parse;

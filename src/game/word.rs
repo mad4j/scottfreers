@@ -2,9 +2,10 @@ use super::parse;
 
 use std::{
     convert::Infallible,
+    fmt,
     fs::File,
     io::{BufRead, BufReader, Error},
-    str::FromStr, fmt,
+    str::FromStr,
 };
 
 #[derive(Debug)]
@@ -37,6 +38,6 @@ impl parse::Parse for Word {
 
 impl fmt::Display for Word {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.value)
+        write!(f, "{:?}", self.value)
     }
 }

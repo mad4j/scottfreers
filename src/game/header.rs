@@ -1,4 +1,5 @@
 use super::parse;
+use super::token::Token;
 
 use std::{
     fmt,
@@ -8,18 +9,18 @@ use std::{
 
 #[derive(Debug)]
 pub struct Header {
-    pub unknown: u16,
-    pub num_items: u16,
-    pub num_actions: u16,
-    pub num_words: u16, /* Smaller of verb/noun is padded to same size */
-    pub num_rooms: u16,
-    pub max_carry: u16,
-    pub player_room: u16,
-    pub num_treasures: u16,
-    pub word_length: u16,
-    pub light_time: u16,
-    pub num_messages: u16,
-    pub treasure_room: u16,
+    pub unknown: Token,
+    pub num_items: Token,
+    pub num_actions: Token,
+    pub num_words: Token, /* Smaller of verb/noun is padded to same size */
+    pub num_rooms: Token,
+    pub max_carry: Token,
+    pub player_room: Token,
+    pub num_treasures: Token,
+    pub word_length: Token,
+    pub light_time: Token,
+    pub num_messages: Token,
+    pub treasure_room: Token,
 }
 
 impl parse::Parse for Header {
@@ -28,18 +29,18 @@ impl parse::Parse for Header {
         Self: Sized,
     {
         let h = Header {
-            unknown: Self::parse_u16(r)?,
-            num_items: Self::parse_u16(r)?,
-            num_actions: Self::parse_u16(r)? + 1,
-            num_words: Self::parse_u16(r)? + 1,
-            num_rooms: Self::parse_u16(r)? + 1,
-            max_carry: Self::parse_u16(r)?,
-            player_room: Self::parse_u16(r)?,
-            num_treasures: Self::parse_u16(r)?,
-            word_length: Self::parse_u16(r)?,
-            light_time: Self::parse_u16(r)?,
-            num_messages: Self::parse_u16(r)?,
-            treasure_room: Self::parse_u16(r)?,
+            unknown: Token::parse(r)?,
+            num_items: Token::parse(r)?,
+            num_actions: Token::parse(r)? + 1,
+            num_words: Token::parse(r)? + 1,
+            num_rooms: Token::parse(r)? + 1,
+            max_carry: Token::parse(r)?,
+            player_room: Token::parse(r)?,
+            num_treasures: Token::parse(r)?,
+            word_length: Token::parse(r)?,
+            light_time: Token::parse(r)?,
+            num_messages: Token::parse(r)? + 1,
+            treasure_room: Token::parse(r)?,
         };
 
         Ok(h)

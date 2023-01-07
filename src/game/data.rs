@@ -1,4 +1,4 @@
-use super::{action::Action, header::Header, parse::Parse, word::Word, room::Room};
+use super::{action::Action, header::Header, parse::Parse, room::Room, text::Text, word::Word};
 
 use std::{
     fmt,
@@ -6,14 +6,14 @@ use std::{
     io::{BufReader, Error},
 };
 
-use log::{info, debug, trace};
-
+#[derive(Debug)]
 pub struct Data {
-    pub header: Header,
-    pub actions: Vec<Action>,
-    pub verbs: Vec<Word>,
-    pub noums: Vec<Word>,
-    pub rooms: Vec<Room>,
+    header: Header,
+    actions: Vec<Action>,
+    verbs: Vec<Word>,
+    noums: Vec<Word>,
+    rooms: Vec<Room>,
+    messages: Vec<Text>,
 }
 
 impl Parse for Data {
@@ -21,33 +21,28 @@ impl Parse for Data {
     where
         Self: Sized,
     {
-        info!("Parsing Header");
         let header = Header::parse(r)?;
-        debug!("Parsed Header: {:?}", header);
 
-        info!("Parsing Actions");
         let mut actions = Vec::new();
         for _ in 0..header.num_actions {
             actions.push(Action::parse(r)?);
         }
-        debug!("Parsed {} actions.", actions.len());
 
-        info!("Parsing Verbs and Noums");
         let mut verbs = Vec::new();
         let mut noums = Vec::new();
         for _ in 0..header.num_words {
             verbs.push(Word::parse(r)?);
-            debug!("parsed Verb: {}", verbs.last().unwrap());
             noums.push(Word::parse(r)?);
-            debug!("parsed Noum: {}", noums.last().unwrap());
         }
 
-        info!("Parsing Rooms");
         let mut rooms = Vec::new();
         for _ in 0..header.num_rooms {
-            trace!("parsing room...");
             rooms.push(Room::parse(r)?);
-            debug!("parsed Room: {}", rooms.last().unwrap());
+        }
+
+        let mut messages = Vec::new();
+        for _ in 0..header.num_messages {
+            messages.push(Text::parse(r)?);
         }
 
         let data = Data {
@@ -56,6 +51,7 @@ impl Parse for Data {
             verbs: verbs,
             noums: noums,
             rooms: rooms,
+            messages: messages,
         };
 
         Ok(data)
@@ -72,19 +68,23 @@ impl Data {
     pub fn dump(&self) {
         println!("{}", self.header);
         for i in 0..self.header.num_actions {
-            println!("Action[{}]: {}", i, self.actions[i as usize]);
+            println!("actions[{}]: {}", i, self.actions[i as usize]);
         }
 
         for i in 0..self.header.num_words {
-            println!("Verb[{}]: {}", i, self.verbs[i as usize]);
+            println!("verbs[{}]: {}", i, self.verbs[i as usize]);
         }
 
         for i in 0..self.header.num_words {
-            println!("Noum[{}]: {}", i, self.noums[i as usize]);
+            println!("noums[{}]: {}", i, self.noums[i as usize]);
         }
 
         for i in 0..self.header.num_rooms {
-            println!("Room[{}]: {}", i, self.rooms[i as usize]);
+            println!("rooms[{}]: {}", i, self.rooms[i as usize]);
+        }
+
+        for i in 0..self.header.num_messages {
+            println!("messages[{}]: {}", i, self.messages[i as usize]);
         }
     }
 }

@@ -2,12 +2,11 @@ use super::parse;
 
 use std::{
     convert::Infallible,
+    fmt,
     fs::File,
     io::{BufRead, BufReader, Error},
-    str::FromStr, fmt,
+    str::FromStr,
 };
-
-use log::{info, debug, trace};
 
 #[derive(Debug)]
 pub struct Text {
@@ -43,6 +42,6 @@ impl parse::Parse for Text {
 
 impl fmt::Display for Text {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.value)
+        write!(f, "{:?}", self.value)
     }
 }
