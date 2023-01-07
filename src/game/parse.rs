@@ -5,7 +5,8 @@ use std::{
 
 pub trait Parse {
     fn parse(r: &mut BufReader<&mut File>) -> Result<Self, Error>
-        where Self: Sized;
+    where
+        Self: Sized;
 
     fn parse_u16(r: &mut BufReader<&mut File>) -> Result<u16, Error> {
         let mut l = String::new();

@@ -22,64 +22,17 @@ pub struct Header {
     pub treasure_room: u16,
 }
 
-impl Header {
-    pub fn new() -> Header {
-        Header {
-            unknown: 0,
-            num_items: 0,
-            num_actions: 0,
-            num_words: 0,
-            num_rooms: 0,
-            max_carry: 0,
-            player_room: 0,
-            num_treasures: 0,
-            word_length: 0,
-            light_time: 0,
-            num_messages: 0,
-            treasure_room: 0,
-        }
-    }
-
-    fn init(
-        unknown: u16,
-        num_items: u16,
-        num_actions: u16,
-        num_words: u16,
-        num_rooms: u16,
-        max_carry: u16,
-        player_room: u16,
-        num_treasures: u16,
-        word_length: u16,
-        light_time: u16,
-        num_messages: u16,
-        treasure_room: u16,
-    ) -> Header {
-        Header {
-            unknown,
-            num_items,
-            num_actions,
-            num_words,
-            num_rooms,
-            max_carry,
-            player_room,
-            num_treasures,
-            word_length,
-            light_time,
-            num_messages,
-            treasure_room,
-        }
-    }
-}
-
 impl parse::Parse for Header {
-    fn parse(r: &mut BufReader<&mut File>) -> Result<Self, Error> {
-
+    fn parse(r: &mut BufReader<&mut File>) -> Result<Self, Error>
+    where
+        Self: Sized,
+    {
         let h = Header {
             unknown: Self::parse_u16(r)?,
             num_items: Self::parse_u16(r)?,
-            num_actions: Self::parse_u16(r)?,
-            num_words: Self::parse_u16(r)?,
-            num_rooms: Self::parse_u16(r)?,
+            num_actions: Self::parse_u16(r)? + 1,
+            num_words: Self::parse_u16(r)? + 1,
+            num_rooms: Self::parse_u16(r)? + 1,
             max_carry: Self::parse_u16(r)?,
             player_room: Self::parse_u16(r)?,
             num_treasures: Self::parse_u16(r)?,
@@ -88,7 +41,7 @@ impl parse::Parse for Header {
             num_messages: Self::parse_u16(r)?,
             treasure_room: Self::parse_u16(r)?,
         };
-        
+
         Ok(h)
     }
 }
