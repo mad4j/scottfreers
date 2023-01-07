@@ -1,19 +1,22 @@
+mod game;
+
+use game::parse::Parse;
+
 use std::{
     fs::File,
-    io::{BufRead, BufReader, Error, ErrorKind}, fmt,
+    io::{BufReader, Error},
 };
 
-
-mod game_header;
-
-use game_header::GameHeader;
+use crate::game::data::Data;
 
 fn main() -> Result<(), Error> {
-
     let mut file = File::open("adv00")?;
-    let gm = GameHeader::parse(&mut file)?;
+    let mut reader = BufReader::new(&mut file);
 
-    println!("{}", gm);
+    let data = Data::parse(&mut reader)?;
+
+    println!("Game Header");
+    println!("{}", data);
 
     Ok(())
 }
