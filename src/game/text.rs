@@ -29,13 +29,17 @@ impl parse::Parse for Text {
         Self: Sized,
     {
         let mut value = String::new();
-
-        let mut count = 0;
-        while !value.ends_with("\"\n") || (value.starts_with("\"\n") && count == 1) {
+        while value.matches(r#"""#).count() < 2 {
             r.read_line(&mut value)?;
-            count += 1;
-            //TODO: infinite loop in case of bad formatted strings
+            //TODO: hanging on bad formatted strings
         }
+        
+        //let mut count = 0;
+        //while !value.ends_with("\"\n") || (value.starts_with("\"\n") && count == 1) {
+        //    r.read_line(&mut value)?;
+        //    count += 1;
+        //    //TODO: infinite loop in case of bad formatted strings
+        //}
 
         let value = String::from(value.trim())
             .replace("\n", "")

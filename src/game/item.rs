@@ -22,16 +22,20 @@ impl parse::Parse for Item {
     where
         Self: Sized,
     {
-        let mut line = String::new();
+        let mut value = String::new();
+        while value.matches(r#"""#).count() < 2 {
+            r.read_line(&mut value)?;
+            //TODO: hanging on bad formatted strings
+        }
 
-        r.read_line(&mut line)?;
-        trace!("parsing raw string {:?} as item...", line);
+        trace!("parsing raw string {:?} as item...", value);
 
         let re =
-            Regex::new(r#"^"(?P<text>.*?)(?P<auto_get>/(.*?)/)?"\s*(?P<loc>\d{1,3})\s*$"#).unwrap();
+            //Regex::new(r#"(?ms)^"(?P<text>.*?)(?P<auto_get>/(.*?)/)?"\s*(?P<loc>\d{1,3})\s*$"#).unwrap();
+            Regex::new(r#"(?ms)\A"(?P<text>.*?)(?P<auto_get>/(.*?)/)?"\s*(?P<loc>\d{1,3})\s*\z"#).unwrap();
 
         let cap = re
-            .captures(&line)
+            .captures(&value)
             .ok_or(Error::new(ErrorKind::InvalidData, "Not valid Item"))?;
 
         let text = cap
