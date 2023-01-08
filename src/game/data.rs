@@ -1,3 +1,14 @@
+/*
+/////////////////////////////////////////////////////////////////////////
+
+Header Format
+Objects,Actions,Words,Rooms,Maxhold,Start,Treasures,Wordlen,Time,Msgs,Troom
+
+Datafile Format:
+
+Header,{Verb0},{Noun0},{Verbn},{Nounn},Actions,Rooms,Messages,Objects
+*/
+
 use super::{
     action::Action, header::Header, item::Item, parse::Parse, room::Room, text::Text,
     trailer::Trailer, word::Word,

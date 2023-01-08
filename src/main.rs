@@ -1,22 +1,30 @@
+mod cli;
 mod game;
 
-use game::data::Data;
-use game::parse::Parse;
-
-use std::{
-    fs::File,
-    io::{BufReader, Error},
+use cli::{
+    args::{CliArgs, Commands},
+    info::cli_info,
 };
+
+use clap::Parser;
+use log::{set_max_level, LevelFilter};
+use std::io::Error;
 
 fn main() -> Result<(), Error> {
     simple_logger::SimpleLogger::new().env().init().unwrap();
 
-    let mut file = File::open("adv00")?;
-    let mut reader = BufReader::new(&mut file);
+    let cli = CliArgs::parse();
 
-    let data = Data::parse(&mut reader)?;
+    set_max_level(match cli.debug {
+        0 => LevelFilter::Off,
+        1 => LevelFilter::Info,
+        2 => LevelFilter::Debug,
+        _ => LevelFilter::Trace,
+    }
+    );
 
-    data.dump();
-
-    Ok(())
+    match cli.command {
+        Commands::Info(info_args) => cli_info(info_args),
+        Commands::Play { game: _ } => todo!(),
+    }
 }

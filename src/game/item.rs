@@ -4,6 +4,7 @@ use std::{
     io::{BufRead, BufReader, Error, ErrorKind},
 };
 
+use log::trace;
 use regex::Regex;
 
 use super::parse;
@@ -11,7 +12,7 @@ use super::parse;
 #[derive(Debug)]
 pub struct Item {
     text: String,
-    auto_get: String,
+    auto_get: Option<String>,
     location: u8,
     initial_location: u8,
 }
@@ -24,22 +25,41 @@ impl parse::Parse for Item {
         let mut line = String::new();
 
         r.read_line(&mut line)?;
+        trace!("parsing raw string {:?} as item...", line);
 
-        let re = Regex::new(r#"^"(.*?)"\s*(\d{1,3})\s*$"#)
-            .map_err(|e| Error::new(ErrorKind::InvalidData, e))?;
-        println!("'{:?}' - {}", line, re.is_match(&line));
+        let re =
+            Regex::new(r#"^"(?P<text>.*?)(?P<auto_get>/(.*?)/)?"\s*(?P<loc>\d{1,3})\s*$"#).unwrap();
 
-        let cap = re.captures(&line).unwrap();
-        println!("'{}' - {}", &cap[1], &cap[2]);
+        let cap = re
+            .captures(&line)
+            .ok_or(Error::new(ErrorKind::InvalidData, "Not valid Item"))?;
 
-        let loc =
-            u8::from_str_radix(&cap[2], 10).map_err(|e| Error::new(ErrorKind::InvalidData, e))?;
+        let text = cap
+            .name("text")
+            .ok_or(Error::new(
+                ErrorKind::InvalidData,
+                "Not valid Item 'text' field",
+            ))?
+            .as_str();
+
+        let auto_get = cap.name("auto_get").map(|s| String::from(s.as_str()));
+
+        let loc = u8::from_str_radix(
+            cap.name("loc")
+                .ok_or(Error::new(
+                    ErrorKind::InvalidData,
+                    "Not valid Item 'location' field",
+                ))?
+                .as_str(),
+            10,
+        )
+        .map_err(|e| Error::new(ErrorKind::InvalidData, e))?;
 
         let item = Item {
-            text: String::from(&cap[1]),
+            text: String::from(text),
             location: loc,
             initial_location: loc,
-            auto_get: String::new(),
+            auto_get: auto_get,
         };
 
         Ok(item)
@@ -50,7 +70,7 @@ impl fmt::Display for Item {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "Item {{ text: \"{}\", location: {}, initial_location: {}, auto_get: \"{}\" }}",
+            "Item {{ text: \"{}\", location: {}, initial_location: {}, auto_get: \"{:?}\" }}",
             self.text, self.location, self.initial_location, self.auto_get
         )
     }
