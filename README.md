@@ -1,2 +1,2 @@
 # scottfreers
-Implementation fo ScottFree interpreter in Rust
+ScottFree interpreter in Rust
