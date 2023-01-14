@@ -14,26 +14,27 @@ use super::{
     trailer::Trailer, word::Word,
 };
 
+use serde::Serialize;
+
 use std::{
     fmt,
-    fs::File,
-    io::{BufReader, Error},
+    io::{BufReader, Error, Read},
 };
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Data {
-    header: Header,
-    actions: Vec<Action>,
-    verbs: Vec<Word>,
-    noums: Vec<Word>,
-    rooms: Vec<Room>,
-    messages: Vec<Text>,
-    items: Vec<Item>,
-    trailer: Trailer,
+    pub header: Header,
+    pub actions: Vec<Action>,
+    pub verbs: Vec<Word>,
+    pub noums: Vec<Word>,
+    pub rooms: Vec<Room>,
+    pub messages: Vec<Text>,
+    pub items: Vec<Item>,
+    pub trailer: Trailer,
 }
 
 impl Parse for Data {
-    fn parse(r: &mut BufReader<&mut File>) -> Result<Self, Error>
+    fn parse(r: &mut BufReader<impl Read>) -> Result<Self, Error>
     where
         Self: Sized,
     {
@@ -90,7 +91,11 @@ impl Parse for Data {
 
 impl fmt::Display for Data {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.header)
+        write!(
+            f,
+            "{}",
+            serde_json::to_string(self).unwrap_or(String::from("None"))
+        )
     }
 }
 

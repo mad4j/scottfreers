@@ -1,11 +1,12 @@
+use serde::Serialize;
+
 use super::{parse, token::Token};
 
 use std::{
     fmt,
-    fs::File,
-    io::{BufReader, Error},
+    io::{BufReader, Error, Read},
 };
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Trailer {
     version: Token,
     number: Token,
@@ -13,7 +14,7 @@ pub struct Trailer {
 }
 
 impl parse::Parse for Trailer {
-    fn parse(r: &mut BufReader<&mut File>) -> Result<Self, Error>
+    fn parse(r: &mut BufReader<impl Read>) -> Result<Self, Error>
     where
         Self: Sized,
     {
@@ -31,7 +32,7 @@ impl fmt::Display for Trailer {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "{{ version: {}.{}, numner: {}, unknown: {} }}",
+            "Trailer {{ version: {}.{}, number: {}, unknown: {} }}",
             self.version / 100,
             self.version % 100,
             self.number,

@@ -1,14 +1,15 @@
+use serde::Serialize;
+
 use super::parse;
 
 use std::{
     convert::Infallible,
     fmt,
-    fs::File,
-    io::{BufRead, BufReader, Error},
+    io::{BufRead, BufReader, Error, Read},
     str::FromStr,
 };
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Text {
     value: String,
 }
@@ -24,7 +25,7 @@ impl FromStr for Text {
 }
 
 impl parse::Parse for Text {
-    fn parse(r: &mut BufReader<&mut File>) -> Result<Self, Error>
+    fn parse(r: &mut BufReader<impl Read>) -> Result<Self, Error>
     where
         Self: Sized,
     {
@@ -33,7 +34,7 @@ impl parse::Parse for Text {
             r.read_line(&mut value)?;
             //TODO: hanging on bad formatted strings
         }
-        
+
         //let mut count = 0;
         //while !value.ends_with("\"\n") || (value.starts_with("\"\n") && count == 1) {
         //    r.read_line(&mut value)?;

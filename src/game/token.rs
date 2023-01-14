@@ -1,14 +1,11 @@
 use super::parse;
 
-use std::{
-    fs::File,
-    io::{BufRead, BufReader, Error, ErrorKind},
-};
+use std::io::{BufRead, BufReader, Error, ErrorKind, Read};
 
 pub type Token = u16;
 
 impl parse::Parse for Token {
-    fn parse(r: &mut BufReader<&mut File>) -> Result<Self, Error>
+    fn parse(r: &mut BufReader<impl Read>) -> Result<Self, Error>
     where
         Self: Sized,
     {

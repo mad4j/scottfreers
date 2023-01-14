@@ -1,15 +1,16 @@
 use std::{
     fmt,
-    fs::File,
-    io::{BufRead, BufReader, Error, ErrorKind},
+    io::{BufRead, BufReader, Error, ErrorKind, Read},
 };
 
 use log::trace;
 use regex::Regex;
 
+use serde::Serialize;
+
 use super::parse;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Item {
     text: String,
     auto_get: Option<String>,
@@ -18,7 +19,7 @@ pub struct Item {
 }
 
 impl parse::Parse for Item {
-    fn parse(r: &mut BufReader<&mut File>) -> Result<Self, Error>
+    fn parse(r: &mut BufReader<impl Read>) -> Result<Self, Error>
     where
         Self: Sized,
     {
@@ -31,8 +32,8 @@ impl parse::Parse for Item {
         trace!("parsing raw string {:?} as item...", value);
 
         let re =
-            //Regex::new(r#"(?ms)^"(?P<text>.*?)(?P<auto_get>/(.*?)/)?"\s*(?P<loc>\d{1,3})\s*$"#).unwrap();
-            Regex::new(r#"(?ms)\A"(?P<text>.*?)(?P<auto_get>/(.*?)/)?"\s*(?P<loc>\d{1,3})\s*\z"#).unwrap();
+            Regex::new(r#"(?ms)\A"(?P<text>.*?)(?P<auto_get>/(.*?)/)?"\s*(?P<loc>\d{1,3})\s*\z"#)
+                .unwrap();
 
         let cap = re
             .captures(&value)
@@ -74,8 +75,8 @@ impl fmt::Display for Item {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "Item {{ text: \"{}\", location: {}, initial_location: {}, auto_get: \"{:?}\" }}",
-            self.text, self.location, self.initial_location, self.auto_get
+            "{}",
+            serde_json::to_string(self).unwrap_or(String::from("None"))
         )
     }
 }

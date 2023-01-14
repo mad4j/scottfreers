@@ -1,14 +1,15 @@
+use serde::Serialize;
+
 use super::parse;
 
 use std::{
     convert::Infallible,
     fmt,
-    fs::File,
-    io::{BufRead, BufReader, Error},
+    io::{BufRead, BufReader, Error, Read},
     str::FromStr,
 };
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Word {
     value: String,
 }
@@ -24,7 +25,8 @@ impl FromStr for Word {
 }
 
 impl parse::Parse for Word {
-    fn parse(r: &mut BufReader<&mut File>) -> Result<Self, Error>
+    //fn parse(r: &mut BufReader<&mut File>) -> Result<Self, Error>
+    fn parse(r: &mut BufReader<impl Read>) -> Result<Self, Error>
     where
         Self: Sized,
     {

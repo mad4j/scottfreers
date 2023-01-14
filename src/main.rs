@@ -7,7 +7,7 @@ use cli::{
 };
 
 use clap::Parser;
-use log::{set_max_level, LevelFilter};
+use log::{set_max_level, trace, LevelFilter};
 use std::io::Error;
 
 fn main() -> Result<(), Error> {
@@ -20,8 +20,9 @@ fn main() -> Result<(), Error> {
         1 => LevelFilter::Info,
         2 => LevelFilter::Debug,
         _ => LevelFilter::Trace,
-    }
-    );
+    });
+
+    trace!("CLI arguments:\n{}", serde_json::to_string_pretty(&cli).unwrap());
 
     match cli.command {
         Commands::Info(info_args) => cli_info(info_args),

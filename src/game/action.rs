@@ -1,12 +1,13 @@
+use serde::Serialize;
+
 use super::{parse, token::Token};
 
 use std::{
     fmt,
-    fs::File,
-    io::{BufReader, Error},
+    io::{BufReader, Error, Read},
 };
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Action {
     vocab: u16,
     conditions: [Token; 5],
@@ -14,7 +15,7 @@ pub struct Action {
 }
 
 impl parse::Parse for Action {
-    fn parse(r: &mut BufReader<&mut File>) -> Result<Self, Error>
+    fn parse(r: &mut BufReader<impl Read>) -> Result<Self, Error>
     where
         Self: Sized,
     {

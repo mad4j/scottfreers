@@ -1,13 +1,14 @@
+use serde::Serialize;
+
 use super::parse;
 use super::token::Token;
 
 use std::{
     fmt,
-    fs::File,
-    io::{BufReader, Error},
+    io::{BufReader, Error, Read},
 };
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Header {
     pub unknown: Token,
     pub num_items: Token,
@@ -24,7 +25,7 @@ pub struct Header {
 }
 
 impl parse::Parse for Header {
-    fn parse(r: &mut BufReader<&mut File>) -> Result<Self, Error>
+    fn parse(r: &mut BufReader<impl Read>) -> Result<Self, Error>
     where
         Self: Sized,
     {
