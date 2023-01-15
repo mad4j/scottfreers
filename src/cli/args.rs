@@ -29,7 +29,7 @@ pub enum Commands {
 pub struct InfoArgs {
     /// game file
     #[arg(short, long, value_name = "FILE", group = "game_source")]
-    pub file: PathBuf,
+    pub file: Option<PathBuf>,
 
     /// game name
     #[arg(

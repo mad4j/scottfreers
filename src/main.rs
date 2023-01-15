@@ -1,5 +1,6 @@
 mod cli;
 mod game;
+mod games;
 
 use cli::{
     args::{CliArgs, Commands},
@@ -22,10 +23,13 @@ fn main() -> Result<(), Error> {
         _ => LevelFilter::Trace,
     });
 
-    trace!("CLI arguments:\n{}", serde_json::to_string_pretty(&cli).unwrap());
+    trace!(
+        "CLI arguments:\n{}",
+        serde_json::to_string_pretty(&cli).unwrap()
+    );
 
     match cli.command {
-        Commands::Info(info_args) => cli_info(info_args),
+        Commands::Info(info_args) => cli_info(&info_args),
         Commands::Play { game: _ } => todo!(),
     }
 }

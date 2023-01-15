@@ -94,38 +94,7 @@ impl fmt::Display for Data {
         write!(
             f,
             "{}",
-            serde_json::to_string(self).unwrap_or(String::from("None"))
+            serde_json::to_string_pretty(self).unwrap_or(String::from("None"))
         )
-    }
-}
-
-impl Data {
-    pub fn dump(&self) {
-        println!("{}", self.header);
-        for i in 0..self.header.num_actions {
-            println!("actions[{}]: {}", i, self.actions[i as usize]);
-        }
-
-        for i in 0..self.header.num_words {
-            println!("verbs[{}]: {}", i, self.verbs[i as usize]);
-        }
-
-        for i in 0..self.header.num_words {
-            println!("noums[{}]: {}", i, self.noums[i as usize]);
-        }
-
-        for i in 0..self.header.num_rooms {
-            println!("rooms[{}]: {}", i, self.rooms[i as usize]);
-        }
-
-        for i in 0..self.header.num_messages {
-            println!("messages[{}]: {}", i, self.messages[i as usize]);
-        }
-
-        for i in 0..self.header.num_items {
-            println!("items[{}]: {}", i, self.items[i as usize]);
-        }
-
-        println!("{}", self.trailer);
     }
 }
