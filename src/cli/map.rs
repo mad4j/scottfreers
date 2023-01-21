@@ -1,15 +1,16 @@
-
 use std::{
     fs::File,
     io::{BufReader, Error, ErrorKind},
 };
 
-use crate::{game::{data::Data, parse::Parse}, games::utils::get_game_data};
+use crate::{
+    game::{data::Data, parse::Parse},
+    games::utils::get_game_data,
+};
 
 use super::args::InfoArgs;
 
-
-const DIRECTIONS: [&str; 6] = [ "north", "south", "east", "west", "up", "down"];
+const DIRECTIONS: [&str; 6] = ["north", "south", "east", "west", "up", "down"];
 
 pub fn cli_map(args: &InfoArgs) -> Result<(), Error> {
     let data = if let Some(path) = &args.file {
@@ -24,13 +25,11 @@ pub fn cli_map(args: &InfoArgs) -> Result<(), Error> {
     };
 
     for i in 0..data.rooms.len() {
-
         let r = &data.rooms[i];
         println!("r{}: {{ tooltip: {} }}", i, r.text);
     }
 
     for i in 0..data.rooms.len() {
-
         let r = &data.rooms[i];
 
         for k in 0..r.exits.len() {
