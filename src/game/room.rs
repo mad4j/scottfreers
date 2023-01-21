@@ -9,8 +9,8 @@ use std::{
 
 #[derive(Debug, Serialize)]
 pub struct Room {
-    text: Text,
-    exits: [Token; 6],
+    pub text: Text,
+    pub exits: [Token; 6],
 }
 
 impl parse::Parse for Room {

@@ -1,6 +1,6 @@
-use super::{adventureland::ADVENTURELAND, mini_adventure::MINI_ADVENTURE};
+use super::{adventureland::ADVENTURELAND, mini_adventure::MINI_ADVENTURE, ghost_town::GHOST_TOWN};
 
-const GAME_LIST: [GameEntry; 2] = [
+const GAME_LIST: [GameEntry; 3] = [
     GameEntry {
         name: "adventureland",
         data: ADVENTURELAND,
@@ -8,6 +8,10 @@ const GAME_LIST: [GameEntry; 2] = [
     GameEntry {
         name: "mini-adventure",
         data: MINI_ADVENTURE,
+    },
+    GameEntry {
+        name: "ghost-town",
+        data: GHOST_TOWN,
     },
 ];
 

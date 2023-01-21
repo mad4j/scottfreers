@@ -11,6 +11,8 @@ use clap::Parser;
 use log::{set_max_level, trace, LevelFilter};
 use std::io::Error;
 
+use crate::cli::map::cli_map;
+
 fn main() -> Result<(), Error> {
     simple_logger::SimpleLogger::new().env().init().unwrap();
 
@@ -30,6 +32,7 @@ fn main() -> Result<(), Error> {
 
     match cli.command {
         Commands::Info(info_args) => cli_info(&info_args),
+        Commands::Map(info_args) => cli_map(&info_args),
         Commands::Play { game: _ } => todo!(),
     }
 }

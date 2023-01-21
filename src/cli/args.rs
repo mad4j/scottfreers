@@ -18,6 +18,9 @@ pub enum Commands {
     /// Dump the content of a game file
     Info(InfoArgs),
 
+    /// Display game map
+    Map(InfoArgs),
+
     /// Play a game file
     Play {
         /// game file
