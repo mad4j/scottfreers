@@ -41,3 +41,7 @@ pub fn get_game_data(name: &str) -> Option<String> {
         .find(|g| g.name == name.to_lowercase().trim())
         .map(|g| String::from(g.data))
 }
+
+pub fn get_game_names() -> impl Iterator<Item=&'static str> {
+    GAME_LIST.iter().map(|wrapper| wrapper.name)
+} 

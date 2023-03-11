@@ -5,6 +5,7 @@ mod games;
 use cli::{
     args::{CliArgs, Commands},
     info::cli_info,
+    list::cli_list,
 };
 
 use clap::Parser;
@@ -33,6 +34,7 @@ fn main() -> Result<(), Error> {
     match cli.command {
         Commands::Info(info_args) => cli_info(&info_args),
         Commands::Map(info_args) => cli_map(&info_args),
+        Commands::List => Ok(cli_list()),
         Commands::Play { game: _ } => todo!(),
     }
 }

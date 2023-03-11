@@ -21,6 +21,9 @@ pub enum Commands {
     /// Display game map
     Map(InfoArgs),
 
+    /// Display available embedded games 
+    List,
+
     /// Play a game file
     Play {
         /// game file
