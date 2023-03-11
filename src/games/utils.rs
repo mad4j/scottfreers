@@ -1,9 +1,9 @@
 use super::{
     adventureland::ADVENTURELAND, adventures_of_buckaroo_banzai::ADVENTURES_OF_BUCKAROO_BANZAI,
-    ghost_town::GHOST_TOWN, mini_adventure::MINI_ADVENTURE,
+    ghost_town::GHOST_TOWN, mini_adventure::MINI_ADVENTURE, mission_impossible::MISSION_IMPOSSIBLE,
 };
 
-const GAME_LIST: [GameEntry; 4] = [
+const GAME_LIST: [GameEntry; 5] = [
     GameEntry {
         name: "adventureland",
         data: ADVENTURELAND,
@@ -19,6 +19,10 @@ const GAME_LIST: [GameEntry; 4] = [
     GameEntry {
         name: "adventures-of-buckaroo-banzai",
         data: ADVENTURES_OF_BUCKAROO_BANZAI,
+    },
+    GameEntry {
+        name: "mission-impossible",
+        data: MISSION_IMPOSSIBLE,
     },
 ];
 
