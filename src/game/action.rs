@@ -9,9 +9,11 @@ use std::{
 
 #[derive(Debug, Serialize)]
 pub struct Action {
-    vocab: Token,
+    verb: Token,
+    noum: Token,
     conditions: [Token; 5],
-    actions: [Token; 2],
+    params: [Token; 5],
+    actions: [Token; 4],
 }
 
 impl parse::Parse for Action {
@@ -19,19 +21,23 @@ impl parse::Parse for Action {
     where
         Self: Sized,
     {
+        let vocab = Token::parse(r)?;
+
+        let c0 = Token::parse(r)?;
+        let c1 = Token::parse(r)?;
+        let c2 = Token::parse(r)?;
+        let c3 = Token::parse(r)?;
+        let c4 = Token::parse(r)?;
+
+        let a0 = Token::parse(r)?;
+        let a1 = Token::parse(r)?;
+
         let a = Action {
-            vocab: Token::parse(r)?,
-            conditions: [
-                Token::parse(r)?,
-                Token::parse(r)?,
-                Token::parse(r)?,
-                Token::parse(r)?,
-                Token::parse(r)?,
-            ],
-            actions: [
-                Token::parse(r)?, 
-                Token::parse(r)?
-            ],
+            verb: vocab / 150,
+            noum: vocab % 150,
+            conditions: [c0 % 20, c1 % 20, c2 % 20, c3 % 20, c4 % 20],
+            params: [c0 / 20, c1 / 20, c2 / 20, c3 / 20, c4 / 20],
+            actions: [a0 / 150, a0 % 150, a1 / 150, a1 % 150],
         };
 
         Ok(a)
@@ -42,15 +48,8 @@ impl fmt::Display for Action {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "Action {{ vocab: {}, conditions: [{}, {}, {}, {}, {}], actions: [{}, {}]}}",
-            self.vocab,
-            self.conditions[0],
-            self.conditions[1],
-            self.conditions[2],
-            self.conditions[3],
-            self.conditions[4],
-            self.actions[0],
-            self.actions[1]
+            "{}",
+            serde_json::to_string(self).unwrap_or(String::from("None"))
         )
     }
 }

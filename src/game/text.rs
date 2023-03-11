@@ -43,8 +43,7 @@ impl parse::Parse for Text {
         //    //TODO: infinite loop in case of bad formatted strings
         //}
 
-        let value = String::from(value.trim())
-            .replace([ '\n', '\"' ], "");
+        let value = String::from(value.trim()).replace(['\n', '\"'], "");
 
         let text = Text { value };
         Ok(text)

@@ -10,7 +10,7 @@ use std::{
 
 #[derive(Debug, Serialize)]
 pub struct Header {
-    pub unknown: Token,
+    pub magic: Token,
     pub num_items: Token,
     pub num_actions: Token,
     pub num_words: Token, /* Smaller of verb/noun is padded to same size */
@@ -30,7 +30,7 @@ impl parse::Parse for Header {
         Self: Sized,
     {
         let h = Header {
-            unknown: Token::parse(r)?,
+            magic: Token::parse(r)?,
             num_items: Token::parse(r)? + 1,
             num_actions: Token::parse(r)? + 1,
             num_words: Token::parse(r)? + 1,
@@ -50,27 +50,10 @@ impl parse::Parse for Header {
 
 impl fmt::Display for Header {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let ni = format!("Num of Items    : {}\n", self.num_items);
-        let nt = format!("Num of Treasures: {}\n", self.num_treasures);
-        let mc = format!("Max Carry       : {}\n", self.max_carry);
-
-        let nr = format!("Num of Rooms    : {}\n", self.num_rooms);
-        let pr = format!("Player Room     : {}\n", self.player_room);
-        let tr = format!("Treasure Room   : {}\n", self.treasure_room);
-
-        let na = format!("Num of Actions  : {}\n", self.num_actions);
-        let nw = format!("Num of Words    : {}\n", self.num_words);
-        let wl = format!("Word Lenght     : {}\n", self.word_length);
-        let lt = format!("Ligth Time      : {}\n", self.light_time);
-
-        let nm = format!("Num of Messages : {}\n", self.num_messages);
-
-        let un = format!("Unknown         : {}\n", self.unknown);
-
         write!(
             f,
-            "{}{}{}{}{}{}{}{}{}{}{}{}",
-            ni, nt, mc, nr, pr, tr, na, nw, wl, lt, nm, un
+            "{}",
+            serde_json::to_string(self).unwrap_or(String::from("None"))
         )
     }
 }

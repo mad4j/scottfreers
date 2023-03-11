@@ -33,8 +33,7 @@ impl parse::Parse for Word {
         let mut value = String::new();
         r.read_line(&mut value)?;
 
-        let value = String::from(value.trim())
-            .replace([ '\n', '\"' ], "");
+        let value = String::from(value.trim()).replace(['\n', '\"'], "");
 
         let word = Word { value };
         Ok(word)

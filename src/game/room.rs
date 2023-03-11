@@ -37,14 +37,8 @@ impl fmt::Display for Room {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "Room {{ text: {}, exits: [{}, {}, {}, {}, {}, {}]}}",
-            self.text,
-            self.exits[0],
-            self.exits[1],
-            self.exits[2],
-            self.exits[3],
-            self.exits[4],
-            self.exits[5],
+            "{}",
+            serde_json::to_string(self).unwrap_or(String::from("None"))
         )
     }
 }

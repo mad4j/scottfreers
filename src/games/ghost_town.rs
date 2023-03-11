@@ -1,4 +1,3 @@
-
 pub const GHOST_TOWN: &str = r#" 4727 
  77 
  237 
