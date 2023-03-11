@@ -48,7 +48,7 @@ impl fmt::Display for Action {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "{}",
+            "action {}",
             serde_json::to_string(self).unwrap_or(String::from("None"))
         )
     }
