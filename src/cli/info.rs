@@ -25,13 +25,13 @@ pub fn cli_info(args: &InfoArgs) -> Result<(), Error> {
     if args.sections == Section::All {
         println!("help {}", data);
     } else {
-        dump_sections(&args, &data);
+        dump_sections(args, &data);
     }
 
     Ok(())
 }
 
-fn dump_sections(args: &InfoArgs, data: &Data) -> () {
+fn dump_sections(args: &InfoArgs, data: &Data) {
     if args.sections == Section::Header {
         match args.output_type {
             OutputType::Plain => {

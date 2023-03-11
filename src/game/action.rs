@@ -9,7 +9,7 @@ use std::{
 
 #[derive(Debug, Serialize)]
 pub struct Action {
-    vocab: u16,
+    vocab: Token,
     conditions: [Token; 5],
     actions: [Token; 2],
 }
@@ -28,7 +28,10 @@ impl parse::Parse for Action {
                 Token::parse(r)?,
                 Token::parse(r)?,
             ],
-            actions: [Token::parse(r)?, Token::parse(r)?],
+            actions: [
+                Token::parse(r)?, 
+                Token::parse(r)?
+            ],
         };
 
         Ok(a)

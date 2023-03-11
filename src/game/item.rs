@@ -24,7 +24,7 @@ impl parse::Parse for Item {
         Self: Sized,
     {
         let mut value = String::new();
-        while value.matches(r#"""#).count() < 2 {
+        while value.matches('"').count() < 2 {
             r.read_line(&mut value)?;
             //TODO: hanging on bad formatted strings
         }
@@ -64,7 +64,7 @@ impl parse::Parse for Item {
             text: String::from(text),
             location: loc,
             initial_location: loc,
-            auto_get: auto_get,
+            auto_get,
         };
 
         Ok(item)

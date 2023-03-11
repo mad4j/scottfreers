@@ -30,7 +30,8 @@ impl parse::Parse for Text {
         Self: Sized,
     {
         let mut value = String::new();
-        while value.matches(r#"""#).count() < 2 {
+        //while value.matches(r#"""#).count() < 2 {
+        while value.matches('"').count() < 2 {
             r.read_line(&mut value)?;
             //TODO: hanging on bad formatted strings
         }
@@ -43,10 +44,9 @@ impl parse::Parse for Text {
         //}
 
         let value = String::from(value.trim())
-            .replace("\n", "")
-            .replace("\"", "");
+            .replace([ '\n', '\"' ], "");
 
-        let text = Text { value: value };
+        let text = Text { value };
         Ok(text)
     }
 }

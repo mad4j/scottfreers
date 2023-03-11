@@ -75,14 +75,14 @@ impl Parse for Data {
         let trailer = Trailer::parse(r)?;
 
         let data = Data {
-            header: header,
-            actions: actions,
-            verbs: verbs,
-            noums: noums,
-            rooms: rooms,
-            messages: messages,
-            items: items,
-            trailer: trailer,
+            header,
+            actions,
+            verbs,
+            noums,
+            rooms,
+            messages,
+            items,
+            trailer,
         };
 
         Ok(data)
